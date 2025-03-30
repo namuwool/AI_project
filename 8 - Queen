@@ -35,4 +35,108 @@
 2. Python 3.x 환경에서 실행합니다.
 3. `python eight_queens_ga.py` 명령어로 실행하면 유전자 알고리즘이 실행되고, 해를 찾으면 체스보드를 출력합니다.
 
-## 출력 예시
+## 파이썬 코드 
+
+import random
+import copy
+
+# 8-Queen 문제를 유전자 알고리즘으로 해결하는 클래스
+class EightQueensGA:
+    def __init__(self, population_size=100, mutation_rate=0.1, max_generations=1000):
+        self.board_size = 8  # 체스보드 크기 (8x8)
+        self.population_size = population_size  # 개체군 크기
+        self.mutation_rate = mutation_rate  # 돌연변이 확률
+        self.max_generations = max_generations  # 최대 세대 수
+        self.population = self.initialize_population()  # 초기 개체군 생성
+
+    # 초기 개체군 생성
+    def initialize_population(self):
+        population = []
+        for _ in range(self.population_size):
+            # 각 열에 대해 무작위로 행 번호를 선택 (0~7)
+            individual = [random.randint(0, self.board_size - 1) for _ in range(self.board_size)]
+            population.append(individual)
+        return population
+
+    # 적합도 계산: 공격하는 퀸 쌍의 수를 계산 (수가 적을수록 좋은 해)
+    def fitness(self, individual):
+        attacking_pairs = 0
+
+        # 모든 퀸 쌍에 대해 공격 여부 확인
+        for i in range(self.board_size):
+            for j in range(i + 1, self.board_size):
+                # 같은 행에 있는 경우
+                if individual[i] == individual[j]:
+                    attacking_pairs += 1
+                # 대각선에 있는 경우
+                if abs(individual[i] - individual[j]) == abs(i - j):
+                    attacking_pairs += 1
+
+        # 적합도는 공격 쌍의 수를 음수로 반환 (작을수록 좋음)
+        return -attacking_pairs
+
+    # 돌연변이 연산
+    def mutate(self, individual):
+        mutated = copy.deepcopy(individual)
+        for i in range(self.board_size):
+            if random.random() < self.mutation_rate:
+                # 무작위로 행 위치 변경
+                mutated[i] = random.randint(0, self.board_size - 1)
+        return mutated
+
+    # 유전자 알고리즘 실행
+    def run(self):
+        for generation in range(self.max_generations):
+            # 개체군을 적합도 기준으로 정렬
+            self.population.sort(key=self.fitness, reverse=True)
+
+            # 가장 적합한 개체 확인
+            best_individual = self.population[0]
+            best_fitness = self.fitness(best_individual)
+
+            # 목표 도달 (공격 쌍이 0) 시 종료
+            if best_fitness == 0:
+                print(f"Solution found in generation {generation}!")
+                print("Best individual:", best_individual)
+                print("Fitness:", best_fitness)
+                return best_individual
+
+            # 새로운 개체군 생성
+            new_population = [best_individual]  # 엘리트 개체 보존
+            while len(new_population) < self.population_size:
+                # 상위 50%에서 무작위로 선택
+                parent = random.choice(self.population[:self.population_size // 2])
+                # 돌연변이 적용
+                child = self.mutate(parent)
+                new_population.append(child)
+
+            self.population = new_population
+
+        # 최대 세대까지 도달 시 가장 좋은 해 반환
+        best_individual = self.population[0]
+        print("No solution found within max generations.")
+        print("Best individual:", best_individual)
+        print("Fitness:", self.fitness(best_individual))
+        return best_individual
+
+    # 체스보드 출력
+    def print_board(self, individual):
+        for row in range(self.board_size):
+            line = ""
+            for col in range(self.board_size):
+                if individual[col] == row:
+                    line += " Q "
+                else:
+                    line += " . "
+            print(line)
+        print()
+
+# 메인 함수
+if __name__ == "__main__":
+    # 유전자 알고리즘 객체 생성
+    ga = EightQueensGA(population_size=100, mutation_rate=0.1, max_generations=1000)
+    # 알고리즘 실행
+    solution = ga.run()
+    # 결과 출력
+    print("\nFinal Board:")
+    ga.print_board(solution)
