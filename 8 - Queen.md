@@ -30,12 +30,7 @@
   - `run()`: 유전자 알고리즘을 실행하여 해를 찾습니다.
   - `print_board()`: 최종 해를 체스보드 형태로 출력합니다.
 
-## 실행 방법
-1. 코드를 다운로드합니다.
-2. Python 3.x 환경에서 실행합니다.
-3. `python eight_queens_ga.py` 명령어로 실행하면 유전자 알고리즘이 실행되고, 해를 찾으면 체스보드를 출력합니다.
-
-## 파이썬 코드 
+# 파이썬 코드 
 
 import random
 import copy
@@ -130,8 +125,6 @@ class EightQueensGA:
                     line += " . "
             print(line)
         print()
-
-# 메인 함수
 if __name__ == "__main__":
     # 유전자 알고리즘 객체 생성
     ga = EightQueensGA(population_size=100, mutation_rate=0.1, max_generations=1000)
