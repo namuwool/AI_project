@@ -32,17 +32,17 @@
 
 # 파이썬 코드 
 
-import random
-import copy
+    import copy
+    import random
 
-# 8 _Queen 문제를 유전자 알고리즘으로 해결하는 클래스
-class EightQueensGA:
-    def __init__(self, population_size=100, mutation_rate=0.1, max_generations=1000):
-        self.board_size = 8  # 체스보드 크기 (8x8)
-        self.population_size = population_size  # 개체군 크기
-        self.mutation_rate = mutation_rate  # 돌연변이 확률
-        self.max_generations = max_generations  # 최대 세대 수
-        self.population = self.initialize_population()  # 초기 개체군 생성
+    # 8-Queen 문제를 유전자 알고리즘으로 해결하는 클래스
+    class EightQueensGA:
+        def __init__(self, population_size=100, mutation_rate=0.1, max_generations=1000):
+            self.board_size = 8  # 체스보드 크기 (8x8)
+            self.population_size = population_size  # 개체군 크기
+            self.mutation_rate = mutation_rate  # 돌연변이 확률
+            self.max_generations = max_generations  # 최대 세대 수
+            self.population = self.initialize_population()  # 초기 개체군 생성
 
     # 초기 개체군 생성
     def initialize_population(self):
@@ -125,11 +125,13 @@ class EightQueensGA:
                     line += " . "
             print(line)
         print()
-if __name__ == "__main__":
-    # 유전자 알고리즘 객체 생성
-    ga = EightQueensGA(population_size=100, mutation_rate=0.1, max_generations=1000)
-    # 알고리즘 실행
-    solution = ga.run()
-    # 결과 출력
-    print("\nFinal Board:")
-    ga.print_board(solution)
+    
+    # 메인 함수
+    if __name__ == "__main__":
+        # 유전자 알고리즘 객체 생성
+        ga = EightQueensGA(population_size=100, mutation_rate=0.1, max_generations=1000)
+        # 알고리즘 실행
+        solution = ga.run()
+        # 결과 출력
+        print("\nFinal Board:")
+        ga.print_board(solution)
