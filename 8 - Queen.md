@@ -35,7 +35,7 @@
 import random
 import copy
 
-# 8-Queen 문제를 유전자 알고리즘으로 해결하는 클래스
+# 8 _Queen 문제를 유전자 알고리즘으로 해결하는 클래스
 class EightQueensGA:
     def __init__(self, population_size=100, mutation_rate=0.1, max_generations=1000):
         self.board_size = 8  # 체스보드 크기 (8x8)
